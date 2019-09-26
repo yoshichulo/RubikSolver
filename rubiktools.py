@@ -9,7 +9,8 @@ colors = {
     5: '#FFFFFF'    # WHITE
 }
 
-def save_cube(cube):
+def show_cube(cube):
+    ''' This function shows the actual state of all the Cube faces '''
     n = len(cube.BACK)
     square_size = 50
     padding = 5
@@ -28,6 +29,14 @@ def save_cube(cube):
     cube_img.show()
 
 def draw_face(drawer, face, square_size, x, y):
+    '''
+    Function that draws the cube square by square
+        - drawer: ImageDraw object, linked with the Image that you want to edit
+        - face: face of the Cube object (Cube.BACK, Cube.FRONT, Cube.LEFT...)
+        - square_size: the size in px of each piece of the cube
+        - x: initial x position for drawing
+        - y: initial y position for drawing
+    '''
     y1 = y ; y2 = y1 + square_size
     for row in face:
         x1 = x ; x2 = x1+ square_size
@@ -37,6 +46,12 @@ def draw_face(drawer, face, square_size, x, y):
         y1 += square_size ; y2 += square_size
 
 def copy_column(face, position, column):
+    '''
+    Function that overrides a face column with a given column and position
+        - face: face of the Cube object (Cube.BACK, Cube.FRONT, Cube.LEFT...)
+        - position: position of the column you want to override (0...N-1)
+        - column: vector that contains the values you want to override the face with
+    '''
     for i in range(0, len(face)):
         face[i][position] = column[i]
     return face

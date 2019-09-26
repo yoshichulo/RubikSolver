@@ -19,26 +19,22 @@ class Cube:
         return ''.join(str(n) for row in cube_array for n in row)
 
 
-data_json = json.load(open('cube.json'))
-cube = Cube(data_json)
-
-
 def llamar_movimiento(cube, movimiento): 
     letra = movimiento[0]
-    numero = int(movimiento[1:])
+    posicion = int(movimiento[1:])
     if letra.islower():
         giro = -90
     else:
         giro = 90
     
     if letra == 'B' or letra == 'b':
-        mover_BX(cube, numero, giro)
+        mover_BX(cube, posicion, giro)
     
     elif letra == 'D' or letra == 'd':
-        mover_DX(cube, numero, giro)
+        mover_DX(cube, posicion, giro)
         
     elif letra == 'L' or letra == 'l':
-        mover_LX(cube, numero, giro)
+        mover_LX(cube, posicion, giro)
     
     else:
         print('Letra no válida')
@@ -50,35 +46,45 @@ def mover_DX(cube, posicion, giro):
     print("Giro")
 
 def mover_LX(cube, posicion, giro):
-    n = len(cube.BACK)
-    posicion_inversa = n - posicion - 1
+    posicion_max = len(cube.BACK) - 1
+    posicion_inversa = posicion_max - posicion
 
-    if giro == 90:
-        columna_back = list(reversed([row[posicion] for row in cube.BACK]))
-        columna_up = list(reversed([row[posicion_inversa] for row in cube.UP]))
-        columna_front = [row[posicion] for row in cube.FRONT]
-        columna_down = [row[posicion] for row in cube.DOWN]
+    # Guardamos una copia de las columnas antes de sustituirlas.
+    columna_back = [row[posicion] for row in cube.BACK]
+    columna_up = [row[posicion_inversa] for row in cube.UP]
+    columna_front = [row[posicion] for row in cube.FRONT]
+    columna_down = [row[posicion] for row in cube.DOWN]
 
-        cube.UP = copy_column(cube.UP, posicion_inversa, columna_back)
-        cube.FRONT = copy_column(cube.FRONT, posicion, columna_up)
+    # Giro correspondiente a L (90º)
+    if giro == 90: # 
+        cube.UP = copy_column(cube.UP, posicion_inversa, list(reversed(columna_back)))
+        cube.FRONT = copy_column(cube.FRONT, posicion, list(reversed(columna_up)))
         cube.DOWN = copy_column(cube.DOWN, posicion, columna_front)
         cube.BACK = copy_column(cube.BACK, posicion, columna_down)
         
         if posicion == 0:
             cube.LEFT = numpy.rot90(cube.LEFT, k=3)
-        if posicion == n -1:
+        if posicion == posicion_max:
             cube.RIGHT = numpy.rot90(cube.RIGHT, k=3)
     
-    rubiktools.save_cube(cube)
+    # Giro correspondiente a l (-90º)
+    elif giro == -90: # 
+        cube.UP = copy_column(cube.UP, posicion_inversa, list(reversed(columna_front)))
+        cube.FRONT = copy_column(cube.FRONT, posicion, columna_down)
+        cube.DOWN = copy_column(cube.DOWN, posicion, columna_back)
+        cube.BACK = copy_column(cube.BACK, posicion, list(reversed(columna_up)))
+        
+        if posicion == 0:
+            cube.LEFT = numpy.rot90(cube.LEFT, k=1)
+        if posicion == posicion_max:
+            cube.RIGHT = numpy.rot90(cube.RIGHT, k=1)
 
-llamar_movimiento(cube, 'L0')
+    # Mostramos el cubo
+    rubiktools.show_cube(cube)
 
-#rubiktools.save_cube(cube)
+data_json = json.load(open('cube.json'))
+cube = Cube(data_json)
 
 
-    
-'''
-1  2  3         7 4 1
-4  5  6   ===>  8 5 2
-7  8  9         9 6 3
-'''
+# Hacemos un movimiento
+llamar_movimiento(cube, 'l0')
