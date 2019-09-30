@@ -2,7 +2,7 @@ import json
 import hashlib
 import numpy
 import rubiktools
-from rubiktools import copy_column
+from rubiktools import copy_column, copy_row
 
 class Cube:
     def __init__(self, data_json):
@@ -82,9 +82,45 @@ def mover_LX(cube, posicion, giro):
     # Mostramos el cubo
     rubiktools.show_cube(cube)
 
+def mover_DX(cube, posicion, giro):
+    posicion_max = len(cube.DOWN) - 1
+    posicion_inversa = posicion_max - posicion
+
+    # Guardamos una copia de las columnas y filas antes de sustituirlas.
+    fila_back = cube.BACK[posicion_inversa]
+    columna_left = [row[posicion_inversa] for row in cube.LEFT]
+    fila_front = cube.FRONT[posicion]
+    columna_right = [row[posicion] for row in cube.RIGHT]
+
+    # Giro correspondiente a D (90º)
+    if giro == 90: # 
+        cube.LEFT = copy_column(cube.LEFT, posicion_inversa, fila_front)
+        cube.FRONT = copy_row(cube.FRONT, posicion, list(reversed(columna_right)))
+        cube.RIGHT = copy_column(cube.RIGHT, posicion, fila_back)
+        cube.BACK = copy_row(cube.BACK, posicion_inversa, list(reversed(columna_left)))
+        
+        if posicion == 0:
+            cube.DOWN = numpy.rot90(cube.DOWN, k=3)
+        if posicion == posicion_max:
+            cube.UP = numpy.rot90(cube.UP, k=3)
+    
+    # Giro correspondiente a D (-90º)
+    elif giro == -90: # 
+        cube.LEFT = copy_column(cube.LEFT, posicion_inversa, list(reversed(fila_back)))
+        cube.FRONT = copy_row(cube.FRONT, posicion, columna_left)
+        cube.RIGHT = copy_column(cube.RIGHT, posicion, list(reversed(fila_front)))
+        cube.BACK = copy_row(cube.BACK, posicion_inversa, columna_right)
+        
+        if posicion == 0:
+            cube.LEFT = numpy.rot90(cube.LEFT, k=1)
+        if posicion == posicion_max:
+            cube.RIGHT = numpy.rot90(cube.RIGHT, k=1)
+
+    # Mostramos el cubo
+    rubiktools.show_cube(cube)
 data_json = json.load(open('cube.json'))
 cube = Cube(data_json)
 
 
 # Hacemos un movimiento
-llamar_movimiento(cube, 'l0')
+llamar_movimiento(cube, 'd0')

@@ -55,3 +55,8 @@ def copy_column(face, position, column):
     for i in range(0, len(face)):
         face[i][position] = column[i]
     return face
+
+def copy_row(face, position, row):
+    for i in range(0, len(face)):
+        face[position][i] = row[i]
+    return face
