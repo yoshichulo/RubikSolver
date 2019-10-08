@@ -33,19 +33,20 @@ class Cube:
                 giro = 90
             
             if letra == 'B' or letra == 'b':
-                self.mover_BX(posicion, giro)
+                return self.mover_BX(posicion, giro)
             
             elif letra == 'D' or letra == 'd':
-                self.mover_DX(posicion, giro)
+                return self.mover_DX(posicion, giro)
                 
             elif letra == 'L' or letra == 'l':
-                self.mover_LX(posicion, giro)
+                return self.mover_LX(posicion, giro)
             
             else:
                 print('Letra no válida')
 
     def mover_BX(self, posicion, giro):
         cube = copy.deepcopy(self)
+
         # Guardamos una copia de las columnas antes de sustituirlas.
         fila_right = list(self.RIGHT[posicion])
         fila_up = list(self.UP[posicion])
@@ -75,13 +76,14 @@ class Cube:
                 cube.BACK = numpy.rot90(self.BACK, k=1)
             if posicion == self.posicion_max:
                 cube.FRONT = numpy.rot90(self.FRONT, k=1)
-
+        
         return cube
 
 
     def mover_LX(self, posicion, giro):
         posicion_inversa = self.posicion_max - posicion
         cube = copy.deepcopy(self)
+
         # Guardamos una copia de las columnas antes de sustituirlas.
         columna_back = [row[posicion] for row in self.BACK]
         columna_up = [row[posicion_inversa] for row in self.UP]

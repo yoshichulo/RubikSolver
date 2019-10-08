@@ -57,6 +57,12 @@ def copy_column(face, position, column):
     return face
 
 def copy_row(face, position, row):
+    '''
+    Function that overrides a face row with a given row and position
+        - face: face of the Cube object (Cube.BACK, Cube.FRONT, Cube.LEFT...)
+        - position: position of the row you want to override (0...N-1)
+        - row: vector that contains the values you want to override the face with
+    '''
     for i in range(0, len(face)):
         face[position][i] = row[i]
     return face
