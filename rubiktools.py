@@ -12,7 +12,7 @@ colors = {
 def show_cube(cube):
     ''' This function shows the actual state of all the Cube faces '''
     n = len(cube.BACK)
-    square_size = 50
+    square_size = 25
     padding = 5
     face_size = n*square_size
     width, height = (face_size*4 + padding*5, face_size*3 + padding*4)

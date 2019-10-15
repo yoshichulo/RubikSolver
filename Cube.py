@@ -14,11 +14,13 @@ class Cube:
         self.RIGHT =  numpy.array(data_json["RIGHT"], dtype=numpy.int8)
         self.UP =  numpy.array(data_json["UP"], dtype=numpy.int8)
         self.posicion_max = len(self.DOWN) - 1
-        self.hash = hashlib.md5(self.toString().encode()).hexdigest()
     
     def toString(self):
-        cube_array = self.BACK + self.DOWN + self.FRONT + self.LEFT + self.RIGHT + self.UP
+        cube_array = numpy.concatenate((self.BACK,self.DOWN,self.FRONT,self.LEFT,self.RIGHT,self.UP))
         return ''.join(str(n) for row in cube_array for n in row)
+
+    def hash(self):
+        return hashlib.md5(self.toString().encode()).hexdigest()
 
     def llamar_movimiento(self, movimiento): 
         letra = movimiento[0]
