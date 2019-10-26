@@ -10,7 +10,7 @@ class Frontera:
         self.frontera.append(nodo)
 
     def eliminar(self):
-        self.frontera = self.frontera[1:]
+        self.frontera.pop()
     
     def esta_vacia(self):
         return True if len(self.frontera) == 0 else False
