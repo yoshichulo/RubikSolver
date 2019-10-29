@@ -3,12 +3,6 @@ from Estado import Estado
 from copy import deepcopy
 
 class EspacioEstados:
-    def __init__(self, path):
-        '''
-        States space constructor
-        - path: JSON file path
-        '''
-        self.path = path
     
     def sucesores(self, estado):
         '''
