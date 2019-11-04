@@ -6,7 +6,7 @@ class Frontera:
         self.frontera.append(nodo)
 
     def seleccionar_nodo(self):
-        return self.frontera.pop()
+        return self.frontera.pop(0)
     
     def esta_vacia(self):
         return True if len(self.frontera) == 0 else False

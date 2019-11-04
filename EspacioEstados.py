@@ -17,4 +17,4 @@ class EspacioEstados:
         movimientos_D = ['D' + str(i) for i in range(0, estado.cube.posicion_max + 1)] + ['d' + str(i) for i in range(0, estado.cube.posicion_max + 1)]
         movimientos = movimientos_L + movimientos_B + movimientos_D
 
-        return [(mov, Estado(estado.cube.llamar_movimiento(mov)), 1) for mov in movimientos]
+        return [(mov, Estado(estado.cube.llamar_movimiento(mov))) for mov in movimientos]
