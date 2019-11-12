@@ -1,5 +1,17 @@
 class NodoArbol:
+    """
+    Esta clase contiene un Nodo del árbol de búsqueda. 
+    Los distintos atributos que tendrá son:
+        - NodoArbol.id: id del nodo
+        - NodoArbol.move: movimiento que se le ha aplicado al cubo para llegar hasta el nodo
+        - NodoArbol.padre: contiene el padre del nodo
+        - NodoArbol.state: contiene el estado actual del nodo
+        - NodoArbol.cost: costo de llegar hasta el nodo
+        - NodoArbol.d: profundidad del nodo
+        - NodoArbol.f: valor f del nodo
+    """
     def __init__(self, id, move, padre, state, cost, d, f):
+        """ Constructor de la clase NodoArbol """
         self.id = id
         self.move = move
         self.padre = padre
@@ -9,6 +21,7 @@ class NodoArbol:
         self.f = f
     
     def crear_lista_nodos(self, frontera, l_suc, n_actual, prof_max, estrategia):
+        """ Función encargada de crear la lista de nodos en función de una lista de sucesores """
         if n_actual.d < prof_max:
             array_suc = []
             for suc in l_suc:
@@ -21,6 +34,7 @@ class NodoArbol:
             return array_suc
 
     def calcular_f(self, estrategia, n):
+        """ Función encargada de retornar un valor de f en función del nodo y la estrategia elegidas """
         if estrategia == 1:
             return n.d
         elif estrategia == 2:

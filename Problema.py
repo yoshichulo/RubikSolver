@@ -14,10 +14,12 @@ class Problema:
     de la estrategia elegida.
     """
     def __init__(self, path):
+        """ Constructor de la clase Problema """
         self.espacio = EspacioEstados()
         self.estado_inicial = Estado(Cube(json.load(open(path))))
 
-    def print_solucion(self, n):
+    def print_solucion(self, n): 
+        """ Función encargado de imprimir la lista de nodos que llevan a la solución """
         nodos = []
         while n.padre != None:
             nodos.append(n)
@@ -28,6 +30,10 @@ class Problema:
             print("[{}]([{}]{}, c={}, p={}, f={})".format(n.id, n.move, n.state.md5, n.cost, n.d, n.f))
 
     def es_solucion(self, estado):
+        """
+        Función encargada de comprobar si el estado parámetro es la solución del cubo. 
+        Retornara true si es solución y false si no lo es.
+        """
         cube = estado.cube
         faces = [cube.BACK, cube.DOWN, cube.FRONT, cube.LEFT, cube.RIGHT, cube.UP]
         for face in faces:
@@ -37,10 +43,15 @@ class Problema:
         return True
 
     def busqueda_acotada(self, estrategia, prof_max):
+        """
+        Función encargada de encontrar la solución dada una estrategia y una profundidad
+        máxima de busqueda.
+        """
         frontera = Frontera()
         lista_visitados = []
         solucion = False
         
+        # Creamo el nodo inicial, cuyo estado va a ser el estado inicial del cubo
         n_inicial = NodoArbol(frontera.next_id, 'Estado inicial', None, self.estado_inicial, 0, 0, 0)
         frontera.insertar_nodo(n_inicial)
         frontera.next_id += 1
@@ -59,6 +70,7 @@ class Problema:
 
                 if l_nod != None:
                     for n in l_nod:
+                        # Comprobamos si el estado del nodo n ya ha sido visistado
                         if bisect_left(lista_visitados, n.state.md5):
                             frontera.insertar_nodo(n)
         
