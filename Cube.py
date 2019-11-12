@@ -1,12 +1,22 @@
 import json
 import hashlib
 import numpy
-import rubiktools
 import copy
 from rubiktools import copy_column, copy_row
 
 class Cube:
+    """
+    Esta clase contiene nuestro Cubo, en función del .json que le hayamos suministrado en el constructor.
+    Los distintos atributos que tendrá son:
+        - Cube.BACK: parte trasera del cubo.
+        - Cube.DOWN: parte inferior del cubo.
+        - Cube.FRONT: parte delantera del cubo.
+        - Cube.LEFT: parte izquierda del cubo.
+        - Cube.RIGHT: parte derecha del cubo.
+        - Cube.posicion_max: posición máxima del movimiento que podrá hacer el cubo.
+    """
     def __init__(self, data_json):
+        """ Consructor de la clase Cubo """
         self.BACK = numpy.array(data_json["BACK"], dtype=numpy.int8)
         self.DOWN =  numpy.array(data_json["DOWN"], dtype=numpy.int8)
         self.FRONT =  numpy.array(data_json["FRONT"], dtype=numpy.int8)
@@ -15,14 +25,21 @@ class Cube:
         self.UP =  numpy.array(data_json["UP"], dtype=numpy.int8)
         self.posicion_max = len(self.DOWN) - 1
     
-    def toString(self):
+    def __str__(self):
+        """ Función que devolverá el cubo en formato de string """
         cube_array = numpy.concatenate((self.BACK,self.DOWN,self.FRONT,self.LEFT,self.RIGHT,self.UP))
         return ''.join(str(n) for row in cube_array for n in row)
 
     def hash(self):
-        return hashlib.md5(self.toString().encode()).hexdigest()
+        """ Función que devolverá el cubo en formato de md5 """
+        return hashlib.md5(self.__str__().encode()).hexdigest()
 
-    def llamar_movimiento(self, movimiento): 
+    def llamar_movimiento(self, movimiento):
+        """
+        Función que retornará un cubo al que se le ha realizado el movimiento pasado como parámetro .
+        Los posibles movimientos serán BX, bX, DX, dX, LX, lX, donde X es un número entre 0 y Cube.posicion_max.
+        La diferencia entre los movimientos en mayúsculas y su equivalente en minúsculas es la dirección del giro.
+        """
         letra = movimiento[0]
         posicion = int(movimiento[1:])
 
@@ -47,6 +64,7 @@ class Cube:
                 print('Letra no válida')
 
     def mover_BX(self, posicion, giro):
+        """ Función correspondiente al movimiento BX """
         cube = copy.deepcopy(self)
 
         # Guardamos una copia de las columnas antes de sustituirlas.
@@ -55,7 +73,7 @@ class Cube:
         fila_left = list(self.LEFT[posicion])
         fila_down = list(self.DOWN[posicion])
 
-        # Giro correspondiente a L (90º)
+        # Giro correspondiente a B (90º)
         if giro == 90: # 
             cube.LEFT = copy_row(cube.LEFT, posicion, fila_up)
             cube.DOWN = copy_row(cube.DOWN, posicion, fila_left)
@@ -67,7 +85,7 @@ class Cube:
             if posicion == self.posicion_max:
                 cube.FRONT = numpy.rot90(cube.FRONT, k=3)
         
-        # Giro correspondiente a l (-90º)
+        # Giro correspondiente a b (-90º)
         elif giro == -90: # 
             cube.LEFT = copy_row(cube.LEFT, posicion, fila_down)
             cube.DOWN = copy_row(cube.DOWN, posicion, fila_right)
@@ -83,6 +101,7 @@ class Cube:
 
 
     def mover_LX(self, posicion, giro):
+        """ Función correspondiente al movimiento LX """
         posicion_inversa = self.posicion_max - posicion
         cube = copy.deepcopy(self)
 
@@ -92,7 +111,7 @@ class Cube:
         columna_front = [row[posicion] for row in self.FRONT]
         columna_down = [row[posicion] for row in self.DOWN]
 
-        # Giro correspondiente a B (90º)
+        # Giro correspondiente a L (90º)
         if giro == 90: # 
             cube.UP = copy_column(cube.UP, posicion_inversa, list(reversed(columna_back)))
             cube.FRONT = copy_column(cube.FRONT, posicion, list(reversed(columna_up)))
@@ -104,7 +123,7 @@ class Cube:
             if posicion == self.posicion_max:
                 cube.RIGHT = numpy.rot90(cube.RIGHT, k=3)
         
-        # Giro correspondiente a b (-90º)
+        # Giro correspondiente a l (-90º)
         elif giro == -90: # 
             cube.UP = copy_column(cube.UP, posicion_inversa, list(reversed(columna_front)))
             cube.FRONT = copy_column(cube.FRONT, posicion, columna_down)
@@ -120,6 +139,7 @@ class Cube:
 
 
     def mover_DX(self, posicion, giro):
+        """ Función correspondiente al movimiento DX """
         posicion_inversa = self.posicion_max - posicion
         cube = copy.deepcopy(self)
 

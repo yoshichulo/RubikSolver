@@ -1,4 +1,3 @@
-import heapq
 import json
 from bisect import bisect_left
 
@@ -10,7 +9,10 @@ from NodoArbol import NodoArbol
 
 
 class Problema:
-
+    """
+    Esta clase contiene nuestro Problema, que será el encargado de resolver el cubo de Rubikk en función
+    de la estrategia elegida.
+    """
     def __init__(self, path):
         self.espacio = EspacioEstados()
         self.estado_inicial = Estado(Cube(json.load(open(path))))
