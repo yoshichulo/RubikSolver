@@ -15,8 +15,9 @@ class Problema:
     """
     def __init__(self, path):
         """ Constructor de la clase Problema """
+        self.cube = Cube(json.load(open(path)))
         self.espacio = EspacioEstados()
-        self.estado_inicial = Estado(Cube(json.load(open(path))))
+        self.estado_inicial = Estado(self.cube)
 
     def print_solucion(self, n): 
         """ Función encargado de imprimir la lista de nodos que llevan a la solución """
@@ -27,7 +28,7 @@ class Problema:
         nodos.append(n)
         nodos.reverse()
         for n in nodos:
-            print("[{}]([{}]{}, c={}, p={}, f={})".format(n.id, n.move, n.state.md5, n.cost, n.d, n.f))
+            print("[{}]([{}]{}, c={}, p={}, h={}, f={})".format(n.id, n.move, n.state.md5, n.cost, n.d, round(n.h,2), round(n.f,2)))
 
     def es_solucion(self, estado):
         """
@@ -51,13 +52,15 @@ class Problema:
         lista_visitados = []
         solucion = False
         
-        # Creamo el nodo inicial, cuyo estado va a ser el estado inicial del cubo
+        # Creamos el nodo inicial, cuyo estado va a ser el estado inicial del cubo
         n_inicial = NodoArbol(frontera.next_id, 'Estado inicial', None, self.estado_inicial, 0, 0, 0)
         frontera.insertar_nodo(n_inicial)
         frontera.next_id += 1
 
         while not solucion and not frontera.esta_vacia():
             n_actual = frontera.seleccionar_nodo()[2]
+            if n_actual.id == 70:
+                print(n_actual.id, n_actual.move, n_actual.state.md5)
             lista_visitados.append(n_actual.state.md5)
 
             if self.es_solucion(n_actual.state):

@@ -9,7 +9,7 @@ banner = ''' _____       _         ______                _
 | \__/\ |_| | |_) |  __/ |\ \  __/\__ \ (_) | |\ V /  __/ |   
  \____/\__,_|_.__/ \___\_| \_\___||___/\___/|_| \_/ \___|_|   
                                                               '''
-estrategias = ['Anchura', 'Profundidad', 'Coste Uniforme']
+estrategias = ['Anchura', 'Profundidad', 'Coste Uniforme', 'Voraz', 'A*']
 
 
 def selectPath():
@@ -23,8 +23,8 @@ def selectPath():
 
 def selectStrat():
     while True:
-        estrategia = int(input("Introduzca el número de la estrategia a utilizar para resolver el cubo:\n1. Anchura.\n2. Profundidad.\n3. Coste uniforme.\n> "))
-        if (estrategia in [1, 2, 3]):
+        estrategia = int(input("Introduzca el número de la estrategia a utilizar para resolver el cubo:\n1. Anchura.\n2. Profundidad.\n3. Coste uniforme.\n4. Voraz.\n5. A*.\n> "))
+        if (estrategia in [1, 2, 3, 4, 5]):
             return estrategia
         else:
             print("Debe introducir el número correspondiente a una de las opciones.")
