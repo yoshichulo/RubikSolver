@@ -1,3 +1,6 @@
+import math
+
+
 class NodoArbol:
     """
     Esta clase contiene un Nodo del árbol de búsqueda. 
@@ -19,6 +22,7 @@ class NodoArbol:
         self.cost = cost
         self.d = d
         self.f = f
+        self.h = self.calcular_h()
     
     def crear_lista_nodos(self, frontera, l_suc, n_actual, prof_max, estrategia):
         """ Función encargada de crear la lista de nodos en función de una lista de sucesores """
@@ -41,3 +45,29 @@ class NodoArbol:
             return 1/(n.d + 1)
         elif estrategia == 3:
             return n.cost
+        elif estrategia == 4:
+            return n.h
+        elif estrategia == 5:
+            return n.h + n.cost
+
+    def calcular_h(self):
+        """ Función encargada de retornar el valor de la heurística """
+        cube = self.state.cube
+        heuristica = 0
+        faces = [cube.BACK, cube.DOWN, cube.FRONT, cube.LEFT, cube.RIGHT, cube.UP]
+        for face in faces:
+            entropia = 0
+            contador = self.calcular_color(face)
+            for c in range(6):
+                if contador[c] > 0.0:
+                    entropia += contador[c]/(len(face)**2) * math.log(contador[c]/(len(face)**2), 6)
+            heuristica += -entropia
+        return heuristica
+
+    def calcular_color(self, face):
+        """ Función que calcula la entropía de la cara que se le pase como parámetro """
+        contador = [0,0,0,0,0,0]
+        for row in face:
+            for column in row:
+                contador[column] += 1
+        return contador
