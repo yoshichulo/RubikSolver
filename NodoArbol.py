@@ -51,6 +51,7 @@ class NodoArbol:
             return n.h + n.cost
 
     def calcular_h(self):
+        """ Función encargada de retornar el valor de la heurística """
         cube = self.state.cube
         heuristica = 0
         faces = [cube.BACK, cube.DOWN, cube.FRONT, cube.LEFT, cube.RIGHT, cube.UP]
@@ -64,6 +65,7 @@ class NodoArbol:
         return heuristica
 
     def calcular_color(self, face):
+        """ Función que calcula la entropía de la cara que se le pase como parámetro """
         contador = [0,0,0,0,0,0]
         for row in face:
             for column in row:
