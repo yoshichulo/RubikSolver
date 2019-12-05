@@ -18,7 +18,7 @@ def selectPath():
         if (os.path.exists(path)):
             return path
         else:
-            print("La ruta del fichero que ha introducido no es válida..")
+            print("La ruta del fichero que ha introducido no es válida.")
 
 
 def selectStrat():
